@@ -3,7 +3,7 @@
     "path": "C:/Users/bcoch/OneDrive/Desktop/git/afl-population/01_data.R",
     "project_path": "01_data.R",
     "type": "r_source",
-    "hash": "2776827953",
+    "hash": "2969486188",
     "contents": "",
     "dirty": false,
     "created": 1676880003990.0,
@@ -13,15 +13,15 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "61,43",
-        "scrollLine": "44"
+        "cursorPosition": "23,0",
+        "scrollLine": "8"
     },
     "folds": "",
-    "lastKnownWriteTime": 1676893634,
+    "lastKnownWriteTime": 1679227884,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1676893634194,
+    "last_content_update": 1679227884,
     "read_only": false,
     "read_only_alternatives": []
 }

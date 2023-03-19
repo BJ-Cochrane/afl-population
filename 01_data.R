@@ -6,33 +6,64 @@ library(fitzRoy)
 library(glue)
 library(patchwork)
 library(lubridate)
+library(gganimate)
+library(transformr)
 
 
-aflplayers_afltables <- fitzRoy::fetch_player_details(source = 'afltables',
-                              current = FALSE)
-
-
+player_details <- readRDS(file = "data/player_details_2022.rds")
+player_stats <- readRDS(file = "data/player_stats_2022.rds")
 
 today <- lubridate::as_date(Sys.Date())
 
+population <- player_details %>%
+  mutate(age = trunc((dateOfBirth %--% today) / years(1))) %>%
+  mutate(age = age - (year(today) - season))
 
-pop2023 <- fitzRoy::fetch_player_details()%>%
-  mutate(age = trunc((dateOfBirth %--% today) / years(1)))
+population_year_club <-
+population %>%
+  group_by(team,season)%>%
+  add_count(age)%>%
+  unique() %>%
+  group_by(team)%>%
+  complete(age = seq(min(population$age), max(population$age)),fill = list(n = 0)) %>%
+  ungroup() %>%
+  select(team,season,age,n)
+
+
+population_year <-
+  population %>%
+  group_by(season)%>%
+  add_count(age)%>%
+  group_by(season)%>%
+  complete(age = seq(min(population$age), max(population$age)),fill = list(n = 0)) %>%
+  unique() %>%
+  select(season,age,n) %>%
+  unique()
+
+ggplot(population_year)+
+  geom_col(aes(x=age, y = n), size = 1, alpha = 0.5) +
+  geom_hline(aes(yintercept=mean(age)),size = 1 , colour = "red")+
+  labs(title = 'Year: {frame_time}')+
+  theme_classic()+
+  transition_time(season)+
+  ease_aes()
 
 
 
-pop2023club <-
-pop2023 %>%
+
+
+population_club <-
+population %>%
   select(team,age)%>%
   group_by(team,age)%>%
   add_count(age) %>%
   unique() %>%
   group_by(team)%>%
-  complete(age = seq(min(pop2023$age), max(pop2023$age)),fill = list(n = 0)) %>%
+  complete(age = seq(min(population$age), max(population$age)),fill = list(n = 0)) %>%
   ungroup()
 
-pop2023comp <-
-pop2023 %>%
+population_comp <-
+population %>%
   select(age)%>%
   group_by(age)%>%
   add_count(age) %>%
@@ -41,8 +72,8 @@ pop2023 %>%
   ungroup()
 
 
-pop2023_ranges <-
-pop2023 %>%
+population_ranges <-
+population %>%
   select(age)%>%
   group_by(age)%>%
   add_count(age) %>%
@@ -57,21 +88,17 @@ pop2023 %>%
   summarise(n = sum(n)) %>%
   ungroup()
 
-ggplot(pop2023_ranges)+
+ggplot(population_ranges)+
   geom_line(aes(x=ranges, y = n, group = 1), size = 1, alpha = 0.5)+
   scale_y_continuous(sec.axis = dup_axis())
 
 
-ggplot(pop2023club)+
-  geom_line(aes(x=age, y = n, colour = team), size = 1, alpha = 0.5)+
-  geom_line(data = pop2023comp, aes(x=age,y=n/10),colour = 'red', size = 2)+
-  scale_y_continuous(
-    breaks = c(0,2,4,6,8,10),
-    name = "First Axis",
-    sec.axis = sec_axis(~.*10)
-  )
 
 
+
+
+
+### Player data load and save
 
 
 
