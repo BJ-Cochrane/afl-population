@@ -121,20 +121,23 @@ anim1 <-
   labs(title = 'AFL Population - Year: {frame_time}',
        x = "Age",
        y = "Population",
-       fill = "Population status")+
+       fill = "Population status",
+       caption = "@BenCochraneR")+
   theme_classic()+
   theme(legend.position="bottom",
-        axis.text = element_text(size = 11,
+        axis.text = element_text(size = 13,
                                  colour = "black"),
-        plot.title  = element_text(size = 14, face = "bold"),
-        title = element_text(size = 12))+
+        plot.title  = element_text(size = 16, face = "bold"),
+        title = element_text(size = 15),
+        plot.caption =  element_text(size = 15),
+        legend.text = element_text(size = 15))+
   scale_y_continuous(expand = c(0,0), breaks = breaks_pretty(8))+
   scale_x_continuous(breaks = c(18:40), expand = c(0.025,0))+
   transition_time(season)+
   ease_aes()
 
 
-a1 <- animate(anim1, fps = 35, duration = 15, width = 500, height = 500)
+a1 <- animate(anim1, fps = 40, duration = 15, width = 750, height = 600, end_pause = 75)
 
 anim_save('output/pop1.gif', animation = a1)
 
@@ -155,10 +158,11 @@ ggplot(rolling_births_deaths)+
        y = "Cumulative number")+
   theme_classic()+
   theme(legend.position="bottom",
-        axis.text = element_text(size = 11,
+        axis.text = element_text(size = 13,
                                  colour = "black"),
-        plot.title  = element_text(size = 14, face = "bold"),
-        title = element_text(size = 12))+
+        plot.title  = element_text(size = 16, face = "bold"),
+        title = element_text(size = 15),
+        legend.text = element_text(size = 15))+
   scale_y_continuous(expand = c(0,0),
                      breaks = breaks_pretty(10))+
   transition_time(season)+
@@ -167,7 +171,7 @@ ggplot(rolling_births_deaths)+
 
 
 
-a2 <- animate(anim2, fps = 35, duration = 15,width = 500, height = 500)
+a2 <- animate(anim2, fps = 30, duration = 15,width = 250, height = 500, end_pause = 75)
 
 anim_save('output/pop2.gif', animation = a2)
 
@@ -176,17 +180,12 @@ a_mgif <- image_read(a1)
 b_mgif <- image_read(a2)
 
 new_gif <- image_append(c(a_mgif[1], b_mgif[1]))
-for(i in 1:525){
+for(i in 1:600){
   combined <- image_append(c(a_mgif[i], b_mgif[i]))
   new_gif <- c(new_gif, combined)
 }
 
-new_gif
-
-image_write(new_gif,path = "pop4.gif", format = 'gif')
-
-
-anim_save('test.gif')
+image_write(new_gif,path = "output/pop4.gif", format = 'gif')
 
 
 rolling_population <-
