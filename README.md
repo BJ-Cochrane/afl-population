@@ -7,7 +7,7 @@ Various AFL population analysis
 
 
 
-Rastering of all AFL players face to create an 'average' face per club
+Rastering of all AFL players face to create an 'average' face per club  
 ![crom1](https://github.com/BJ-Cochrane/afl-population/blob/main/output/faces/Adelaide%20Crows_shuffle.png)
 ![crom2](https://github.com/BJ-Cochrane/afl-population/blob/main/output/faces/Carlton_shuffle.png)
 ![crom3](https://github.com/BJ-Cochrane/afl-population/blob/main/output/faces/Fremantle_shuffle.png)
