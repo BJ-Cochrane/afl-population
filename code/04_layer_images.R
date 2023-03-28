@@ -36,25 +36,7 @@ raster_teams <- function(team_name,
 imgpaths <- list.files(path="D:/data/player_photos/",
                   pattern = glue("^2022_{team_name}"), full.names = T)
 
-
-imgpaths_rev <- imgpaths %>% sort(decreasing = TRUE)
-
-png(glue('output/faces/{team_name}.png'), width = 2, height = 2, units = 'in', res = 150)
-par(mai=c(0,0,0,0))
-plot.new()
-
-walk(imgpaths, load_and_raster, alpha = alpha_amount)
-
-dev.off()
-
-png(glue('output/faces/{team_name}_rev.png'), width = 2, height = 2, units = 'in', res = 150)
-par(mai=c(0,0,0,0))
-plot.new()
-
-walk(imgpaths_rev, load_and_raster, alpha = alpha_amount)
-
-dev.off()
-
+## Shuffle order
 
 imgpaths_shuffle <- imgpaths %>%
   as_tibble() %>%
@@ -132,17 +114,20 @@ custom_raster <- function(pattern_name, alpha_set = 0.25){
 }
 
 
+bulk <-
+  player_stats %>%
+  filter(season == 2022)%>%
+  select(player.surname) %>%
+  group_by(player.surname)%>%
+  add_count() %>%
+  unique() %>%
+  arrange(desc(n)) %>%
+  filter(n > 30) %>%
+  select(player.surname) %>%
+  unlist(0)
+
+
 walk(bulk,custom_raster)
 
 
-bulk <-
-  player_stats %>%
-    filter(season == 2022)%>%
-    select(player.surname) %>%
-    group_by(player.surname)%>%
-    add_count() %>%
-    unique() %>%
-    arrange(desc(n)) %>%
-    filter(n > 30) %>%
-    select(player.surname) %>%
-  unlist(0)
+
