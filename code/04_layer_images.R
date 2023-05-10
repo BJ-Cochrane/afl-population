@@ -29,68 +29,50 @@ load_and_raster <- function(img_url, alpha){
 }
 
 
-
 raster_teams <- function(team_name,
-                         alpha_amount = 0.05){
+                         alpha_amount = 0.1){
 
-imgpaths <- list.files(path="D:/data/player_photos/",
-                  pattern = glue("^2022_{team_name}"), full.names = T)
+if(team_name == "AFL"){
+  imgpaths <- list.files(path="D:/data/player_photos/",
+                         pattern = glue("^2022_"), full.names = T)
 
-## Shuffle order
-
-imgpaths_shuffle <- imgpaths %>%
-  as_tibble() %>%
-  mutate(id = row_number()) %>%
-  sample_n(nrow(.)) %>%
-  select(value)%>%
-  unlist()
-
-png(glue('output/faces/{team_name}_shuffle.png'), width = 2, height = 2, units = 'in', res = 150)
-par(mai=c(0,0,0,0))
-plot.new()
-
-walk(imgpaths_shuffle, load_and_raster, alpha = alpha_amount)
-
-dev.off()
+} else{
 
 
+  imgpaths <- list.files(path="D:/data/player_photos/",
+                         pattern = glue("^2022_{team_name}"), full.names = T)
 }
 
+  ## Shuffle order
 
-walk(team_names, raster_teams)
-
-
-
-
-### Custom images
-
-
-
-imgpaths_custom <- list.files(path="D:/data/player_photos/",
-                       pattern = glue("(202\\d|Smith)(?:.+)(202\\d|Smith)"), full.names = T)
-
-
-
-imgpaths_custom <- list.files(path="D:/data/player_photos/",
-                              pattern = glue("(2022|De Koning)(?:.+)(2022|De Koning)"), full.names = T)
-
-  imgpaths_shuffle <- imgpaths_custom %>%
+  imgpaths_shuffle <- imgpaths %>%
     as_tibble() %>%
     mutate(id = row_number()) %>%
     sample_n(nrow(.)) %>%
     select(value)%>%
     unlist()
 
-  png(glue('output/faces/custom/DK_shuffle.png'), width = 2, height = 2, units = 'in', res = 150)
+  png(glue('output/faces/test/{team_name}_shuffle_{alpha_amount}.png'), width = 2, height = 2, units = 'in', res = 150)
   par(mai=c(0,0,0,0))
   plot.new()
 
-  walk(imgpaths_shuffle, load_and_raster, alpha = 0.3)
+  walk(imgpaths_shuffle, load_and_raster, alpha = alpha_amount)
 
   dev.off()
 
 
-custom_raster <- function(pattern_name, alpha_set = 0.25){
+}
+
+walk(team_names, raster_teams, alpha_amount = 0.05)
+
+walk("AFL",raster_teams, alpha_amount = 0.01)
+
+
+walk2("AFL",raster_teams)
+
+### Custom images
+
+custom_raster <- function(pattern_name){
 
 
   imgpaths_custom <- list.files(path="D:/data/player_photos/",
@@ -103,7 +85,9 @@ custom_raster <- function(pattern_name, alpha_set = 0.25){
     select(value)%>%
     unlist()
 
-  png(glue('output/faces/custom/{pattern_name}.png'), width = 2, height = 2, units = 'in', res = 150)
+  alpha_set <- 1/length(imgpaths_shuffle)
+
+  png(glue('output/faces/custom/{pattern_name}_{alpha_set}.png'), width = 2, height = 2, units = 'in', res = 150)
   par(mai=c(0,0,0,0))
   plot.new()
 
