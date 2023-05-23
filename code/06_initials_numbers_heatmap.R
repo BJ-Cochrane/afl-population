@@ -16,6 +16,9 @@ library(janitor)
 
 afltables <- fitzRoy::fetch_player_stats_afltables(season = 1800:2023)
 
+
+####### AFLM Jumper numbers heatmap #############################################
+
 number<-afltables %>%
   select(Jumper.No.,First.name,Surname)
 
@@ -60,7 +63,7 @@ ggplot(numbers_count, aes(x=second_number, y=fct_rev(first_number), fill = jumpe
   theme(legend.position = "none")
 
 
-
+########## AFLM initials #############################################
 
 name<-afltables %>%
   select(First.name,Surname)
