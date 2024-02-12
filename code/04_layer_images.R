@@ -33,14 +33,14 @@ raster_teams <- function(team_name,
                          alpha_amount = 0.1){
 
 if(team_name == "AFL"){
-  imgpaths <- list.files(path="D:/data/player_photos/",
-                         pattern = glue("^2022_"), full.names = T)
+  imgpaths <- list.files(path="D:/data/player_photos_aflw/",
+                         pattern = glue("^2023_"), full.names = T)
 
 } else{
 
 
-  imgpaths <- list.files(path="D:/data/player_photos/",
-                         pattern = glue("^2022_{team_name}"), full.names = T)
+  imgpaths <- list.files(path="D:/data/player_photos_aflw/",
+                         pattern = glue("^2023_{team_name}"), full.names = T)
 }
 
   ## Shuffle order
@@ -52,7 +52,7 @@ if(team_name == "AFL"){
     select(value)%>%
     unlist()
 
-  png(glue('output/faces/test/{team_name}_shuffle_{alpha_amount}.png'), width = 2, height = 2, units = 'in', res = 150)
+  png(glue('output/faces/aflw/bulk/teams/{team_name}_shuffle_{alpha_amount}.png'), width = 2, height = 2, units = 'in', res = 300)
   par(mai=c(0,0,0,0))
   plot.new()
 
@@ -63,7 +63,7 @@ if(team_name == "AFL"){
 
 }
 
-walk(team_names, raster_teams, alpha_amount = 0.05)
+walk(team_names, raster_teams, alpha_amount = 0.04)
 
 walk("AFL",raster_teams, alpha_amount = 0.01)
 
@@ -75,7 +75,7 @@ walk2("AFL",raster_teams)
 custom_raster <- function(pattern_name){
 
 
-  imgpaths_custom <- list.files(path="D:/data/player_photos/",
+  imgpaths_custom <- list.files(path="D:/data/player_photos_aflw/",
                                 pattern = glue("(2022|{pattern_name})(?:.+)(2022|{pattern_name})"), full.names = T)
 
   imgpaths_shuffle <- imgpaths_custom %>%
