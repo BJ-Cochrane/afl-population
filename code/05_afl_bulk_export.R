@@ -2,8 +2,8 @@
 
 make_afl_photo <- function(starting_alpha){
 
-imgpaths <- list.files(path="D:/data/player_photos_aflw/",
-                       pattern = glue("^2023_"), full.names = T)
+imgpaths <- list.files(path="D:/data/player_photos/",
+                       pattern = glue("^2022_"), full.names = T)
 
 # Initialize a vector to store the data
 data_vec <- numeric(length(imgpaths))
@@ -34,7 +34,7 @@ imgpaths_shuffle <- cbind(imgpaths_shuffle,data_vec) %>%
   mutate(alpha_vec = as.numeric(data_vec)) %>%
   select(-data_vec)
 
-png(glue('output/faces/aflw/bulk/bulk_AFL_shuffle_{starting_alpha}.png'), width = 2, height = 2, units = 'in', res = 300)
+png(glue('output/faces/bulk/bulk_AFL_shuffle_{starting_alpha}.png'), width = 2, height = 2, units = 'in', res = 150)
 par(mai=c(0,0,0,0))
 plot.new()
 
@@ -46,16 +46,6 @@ dev.off()
 
 }
 
-make_afl_photo(0.0451)
-make_afl_photo(0.0452)
-make_afl_photo(0.0453)
-make_afl_photo(0.0454)
-make_afl_photo(0.0455)
-make_afl_photo(0.0456)
-make_afl_photo(0.0457)
-make_afl_photo(0.0458)
-make_afl_photo(0.0459)
+make_afl_photo(0.055555)
 
-
-
-walk(seq(0.03,0.09,0.005),make_afl_photo)
+walk(seq(0.01,0.3,0.01),make_afl_photo)
